@@ -1,4 +1,14 @@
-p {
-  color: red;
-  font-size: 20px;
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #5e0457;
+}
+
+canvas {
+
+  background-color: black;
+  border: 3px solid #b307a5;
 }
