@@ -10,9 +10,10 @@ body {
 
 canvas {
 
-  background-color: black;
+  background-color: #1b1a1a;
   border: 3px solid #b307a5;
 }
+
 
 #startBtn {
   position: absolute;

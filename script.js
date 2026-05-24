@@ -7,6 +7,7 @@ let ballMove = false;
 let rightPressed = false;
 let leftPressed = false;
 
+
 const ball_radius = 10;
 let ballX = canvas.width / 2;
 let ballY = canvas.height - 40;
@@ -47,6 +48,27 @@ for (let c = 0; c < brickConfig.column_count; c++) {
         };
     }
 }
+
+function drawBackground() {
+
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+
+    gradient.addColorStop(0, 'rgba(80, 196, 250,0.09)');
+    gradient.addColorStop(0.5, 'rgba(80, 196, 250,0.04)');
+    gradient.addColorStop(1, 'rgba(80, 196, 250,0.09)');
+
+    ctx.fillStyle = '#1b1a1a';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < canvas.height; i += 8) {
+        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+        ctx.fillRect(0, i, canvas.width, 4);
+    }
+}
+
 
 function drawScore() {
     ctx.fillText("SCORE: " + score, 51, 30);
@@ -184,7 +206,7 @@ function drawBall() {
 }
 
 function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBackground();
 
     drawPaddle();
     drawBall();
