@@ -34,11 +34,11 @@ for (let c = 0; c < brick_column_count; c++) {
 }
 
 function drawScore() {
-    ctx.fillText("SCORE: " + score, 10, 30);
+    ctx.fillText("SCORE: " + score, 51, 30);
 }
 
 function drawLives() {
-    ctx.fillText("LIVES: " + (lives - 1), canvas.width - 100, 30);
+    ctx.fillText("LIVES: " + (lives - 1), canvas.width - 130, 30);
 }
 
 function drawBricks() {
@@ -197,7 +197,7 @@ function draw() {
     if (ballX + dX < ball_radius || ballX + dX > canvas.width - ball_radius) {
         dX = -dX;
     }
-    if (ballY + dY < ball_radius) {
+    if (ballY + dY < 65 - ball_radius) {
         dY = -dY;
     }
     if (ballY + dY > 690 - ball_radius) {
