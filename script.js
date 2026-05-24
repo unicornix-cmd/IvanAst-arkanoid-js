@@ -1,30 +1,44 @@
 const canvas = document.getElementById('arkan');
 const ctx = canvas.getContext('2d');
 
+let gameStarted = false;
+
+let rightPressed = false;
+let leftPressed = false;
+
 const ball_radius = 10;
 let ballX = canvas.width / 2;
 let ballY = canvas.height - 40;
 let dX = 3;
 let dY = -3;
 
-ctx.font = '35px Playbill';
+ctx.font = '25px Audiowide';
 
 let lives = 3;
 let score = 0;
 
+const paddle = {
+    x: canvas.width / 2 - 75,
+    y: 690,
+    width: 150,
+    height: 10
+};
 
-const brick_line_count = 6;
-const brick_column_count = 5;
-const brick_width = 150;
-const brick_height = 50;
-const brick_offsetX = 51;
-const brick_offsetY = 65;
-const brick_padding = 15;
+const brickConfig = {
+    line_count: 6,
+    column_count: 5,
+    width: 150,
+    height: 50,
+    offsetX: 51,
+    offsetY: 65,
+    padding: 15
+}
+
 
 const bricks = [];
-for (let c = 0; c < brick_column_count; c++) {
+for (let c = 0; c < brickConfig.column_count; c++) {
     bricks[c] = [];
-    for (let l = 0; l < brick_line_count; l++) {
+    for (let l = 0; l < brickConfig.line_count; l++) {
         bricks[c][l] = {
             x: 0,
             y: 0,
@@ -38,24 +52,24 @@ function drawScore() {
 }
 
 function drawLives() {
-    ctx.fillText("LIVES: " + (lives - 1), canvas.width - 130, 30);
+    ctx.fillText("LIVES: " + (lives - 1), canvas.width - 170, 30);
 }
 
 function drawBricks() {
-    for (let c = 0; c < brick_column_count; c++) {
-        for (let l = 0; l < brick_line_count; l++) {
+    for (let c = 0; c < brickConfig.column_count; c++) {
+        for (let l = 0; l < brickConfig.line_count; l++) {
             if (bricks[c][l].status === 1) {
 
 
-                const brickX = l * (brick_width + brick_padding) + brick_offsetX;
+                const brickX = l * (brickConfig.width + brickConfig.padding) + brickConfig.offsetX;
 
-                const brickY = c * (brick_height + brick_padding) + brick_offsetY;
+                const brickY = c * (brickConfig.height + brickConfig.padding) + brickConfig.offsetY;
 
                 bricks[c][l].x = brickX;
                 bricks[c][l].y = brickY;
 
                 ctx.beginPath();
-                ctx.roundRect(brickX, brickY, brick_width, brick_height, 3);
+                ctx.roundRect(brickX, brickY, brickConfig.width, brickConfig.height, 3);
 
                 ctx.fillStyle = '#efc5fa';
                 ctx.fill();
@@ -68,15 +82,15 @@ function drawBricks() {
 }
 
 function ballCollision() {
-    for (let c = 0; c < brick_column_count; c++) {
-        for (let l = 0; l < brick_line_count; l++) {
+    for (let c = 0; c < brickConfig.column_count; c++) {
+        for (let l = 0; l < brickConfig.line_count; l++) {
             let brick = bricks[c][l];
 
             if (brick.status === 1) {
 
                 const isCollisionTrue =
-                    ballX > brick.x && ballX < brick.x + brick_width + ball_radius &&
-                    ballY > brick.y && ballY < brick.y + brick_height + ball_radius;
+                    ballX > brick.x && ballX < brick.x + brickConfig.width + ball_radius &&
+                    ballY > brick.y && ballY < brick.y + brickConfig.height + ball_radius;
 
                 if (isCollisionTrue) {
                     dY = -dY;
@@ -88,7 +102,7 @@ function ballCollision() {
 
                 }
 
-                if ((score / 100) === brick_column_count * brick_line_count) {
+                if ((score / 100) === brickConfig.column_count * brickConfig.line_count) {
                     alert('Победа!');
                     score = 0;
                     document.location.reload();
@@ -101,15 +115,7 @@ function ballCollision() {
 
 }
 
-const paddle = {
-    x: canvas.width / 2 - 75,
-    y: 690,
-    width: 150,
-    height: 10
-};
 
-let rightPressed = false;
-let leftPressed = false;
 
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
@@ -228,4 +234,10 @@ function draw() {
     requestAnimationFrame(draw);
 }
 
-draw();
+document.getElementById("startBtn").addEventListener("click", () => {
+    if (!gameStarted) {
+        gameStarted = true;
+        startBtn.style.display = 'none';
+        draw();
+    }
+});
