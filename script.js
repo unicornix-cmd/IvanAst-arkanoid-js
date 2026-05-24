@@ -7,6 +7,7 @@ let ballMove = false;
 let rightPressed = false;
 let leftPressed = false;
 
+let backLineOffset = 0;
 
 const ball_radius = 10;
 let ballX = canvas.width / 2;
@@ -53,9 +54,9 @@ function drawBackground() {
 
     const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
 
-    gradient.addColorStop(0, 'rgba(80, 196, 250,0.09)');
-    gradient.addColorStop(0.5, 'rgba(80, 196, 250,0.04)');
-    gradient.addColorStop(1, 'rgba(80, 196, 250,0.09)');
+    gradient.addColorStop(0, 'rgba(33, 183, 252, 0.03)');
+    gradient.addColorStop(0.5, 'rgba(80, 196, 250,0.01)');
+    gradient.addColorStop(1, 'rgba(80, 196, 250,0.03)');
 
     ctx.fillStyle = '#1b1a1a';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -64,8 +65,13 @@ function drawBackground() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < canvas.height; i += 8) {
-        ctx.fillStyle = 'rgba(0,0,0,0.2)';
-        ctx.fillRect(0, i, canvas.width, 4);
+        ctx.fillStyle = 'rgba(0,0,0,0.15)';
+        ctx.fillRect(0, i + backLineOffset, canvas.width, 4);
+    }
+    backLineOffset += 0.3;
+
+    if (backLineOffset > 4) {
+        backLineOffset = 0;
     }
 }
 
