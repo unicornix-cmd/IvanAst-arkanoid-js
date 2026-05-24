@@ -7,6 +7,11 @@ let ballY = canvas.height - 40;
 let dX = 3;
 let dY = -3;
 
+ctx.font = '35px Playbill';
+
+let lives = 3;
+let score = 0;
+
 
 const brick_line_count = 6;
 const brick_column_count = 5;
@@ -28,6 +33,14 @@ for (let c = 0; c < brick_column_count; c++) {
     }
 }
 
+function drawScore() {
+    ctx.fillText("SCORE: " + score, 10, 30);
+}
+
+function drawLives() {
+    ctx.fillText("LIVES: " + (lives - 1), canvas.width - 100, 30);
+}
+
 function drawBricks() {
     for (let c = 0; c < brick_column_count; c++) {
         for (let l = 0; l < brick_line_count; l++) {
@@ -42,7 +55,7 @@ function drawBricks() {
                 bricks[c][l].y = brickY;
 
                 ctx.beginPath();
-                ctx.rect(brickX, brickY, brick_width, brick_height);
+                ctx.roundRect(brickX, brickY, brick_width, brick_height, 3);
 
                 ctx.fillStyle = '#efc5fa';
                 ctx.fill();
@@ -62,14 +75,23 @@ function ballCollision() {
             if (brick.status === 1) {
 
                 const isCollisionTrue =
-                    ballX > brick.x && ballX < brick.x + brick_width &&
-                    ballY > brick.y && ballY < brick.y + brick_height;
+                    ballX > brick.x && ballX < brick.x + brick_width + ball_radius &&
+                    ballY > brick.y && ballY < brick.y + brick_height + ball_radius;
 
                 if (isCollisionTrue) {
                     dY = -dY;
                     brick.status = 0;
 
+                    score += 100;
+                    dX += 0.65;
+                    dY += 0.65;
 
+                }
+
+                if ((score / 100) === brick_column_count * brick_line_count) {
+                    alert('Победа!');
+                    score = 0;
+                    document.location.reload();
                 }
             }
 
@@ -80,7 +102,7 @@ function ballCollision() {
 }
 
 const paddle = {
-    x: canvas.width / 2,
+    x: canvas.width / 2 - 75,
     y: 690,
     width: 150,
     height: 10
@@ -159,6 +181,8 @@ function draw() {
     drawBall();
     drawBricks();
     ballCollision();
+    drawScore();
+    drawLives();
 
     if (leftPressed && paddle.x > 0) {
         paddle.x -= 12;
@@ -176,9 +200,25 @@ function draw() {
     if (ballY + dY < ball_radius) {
         dY = -dY;
     }
-    if (ballX + dX > paddle.x - ball_radius && ballY + dY > paddle.y - ball_radius) {
-        dX = -dX;
-        dY = -dY;
+    if (ballY + dY > 690 - ball_radius) {
+        if (ballX > paddle.x - ball_radius && ballX < paddle.x + paddle.width - ball_radius) {
+            dY = -dY;
+        } else {
+            lives--;
+
+            if (lives === 0) {
+                alert('Вы проиграли! \nИгра окончена');
+
+                document.location.reload();
+            } else {
+                ballX = canvas.width / 2;
+                ballY = canvas.height - 40;
+                paddle.x = canvas.width / 2 - 75;
+                dX = 3;
+                dY = -3;
+            }
+        }
+
     }
 
 
