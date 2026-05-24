@@ -80,9 +80,9 @@ function ballCollision() {
 }
 
 const paddle = {
-    x: 490,
+    x: canvas.width / 2,
     y: 690,
-    width: 100,
+    width: 150,
     height: 10
 };
 
@@ -165,6 +165,20 @@ function draw() {
     }
     if (rightPressed && paddle.x + paddle.width < canvas.width) {
         paddle.x += 12;
+    }
+
+    if (ballX > canvas.width) {
+        dX = -dX;
+    }
+    if (ballX + dX < ball_radius || ballX + dX > canvas.width - ball_radius) {
+        dX = -dX;
+    }
+    if (ballY + dY < ball_radius) {
+        dY = -dY;
+    }
+    if (ballX + dX > paddle.x - ball_radius && ballY + dY > paddle.y - ball_radius) {
+        dX = -dX;
+        dY = -dY;
     }
 
 
