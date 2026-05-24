@@ -2,6 +2,7 @@ const canvas = document.getElementById('arkan');
 const ctx = canvas.getContext('2d');
 
 let gameStarted = false;
+let ballMove = false;
 
 let rightPressed = false;
 let leftPressed = false;
@@ -124,10 +125,12 @@ function keyDownHandler(event) {
 
     if (event.key === 'ArrowRight') {
         rightPressed = true;
+        ballMove = true;
     }
 
     if (event.key === 'ArrowLeft') {
         leftPressed = true;
+        ballMove = true;
     }
 }
 
@@ -222,15 +225,17 @@ function draw() {
                 paddle.x = canvas.width / 2 - 75;
                 dX = 3;
                 dY = -3;
+                ballMove = false;
             }
         }
 
     }
 
 
-    ballX += dX;
-    ballY += dY;
-
+    if (ballMove) {
+        ballX += dX;
+        ballY += dY;
+    }
     requestAnimationFrame(draw);
 }
 
